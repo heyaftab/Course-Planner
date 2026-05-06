@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE Course Planner — UIU</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- AUTH VIEW -->
+<section class="auth-shell" id="authView">
+  <div class="auth-panel">
+    <div class="auth-brand">
+      <div class="brand-icon">🎓</div>
+      <div>
+        <div class="brand-title">Course Planner</div>
+        <div class="brand-sub">United International University</div>
+      </div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="loginTab" onclick="showLoginPage()">Login</button>
+      <button class="auth-tab" id="signupTab" onclick="showSignupPage()">Sign Up</button>
+    </div>
+
+    <div id="loginPage" class="auth-page">
+      <h1>Student Login</h1>
+      <p class="auth-copy">Use the same UIU student ID and password you used while signing up here.</p>
+      <form onsubmit="loginStudent(event)">
+        <div class="form-row">
+          <label class="form-label">UIU Student ID</label>
+          <input class="form-input" id="loginStudentId" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10 digit student ID" autocomplete="username" oninput="keepStudentIdNumeric(this)" required>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="loginPassword" type="password" placeholder="Enter exact password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-primary auth-submit" type="submit">Login</button>
+      </form>
+    </div>
+
+    <div id="signupPage" class="auth-page" hidden>
+      <h1>Student Sign Up</h1>
+      <p class="auth-copy">Create a local planner account with your UIU student ID.</p>
+      <form onsubmit="signupStudent(event)">
+        <div class="form-row">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" id="signupName" placeholder="Student name" autocomplete="name" required>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Email *</label>
+          <input class="form-input" id="signupEmail" type="email" placeholder="student@example.com" autocomplete="email" required>
+        </div>
+        <div class="form-row">
+          <label class="form-label">UIU Student ID</label>
+          <input class="form-input" id="signupStudentId" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10 digit student ID" autocomplete="username" oninput="keepStudentIdNumeric(this)" required>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="signupPassword" type="password" placeholder="Minimum 6 characters" autocomplete="new-password" required>
+        </div>
+        <button class="btn btn-primary auth-submit" type="submit">Create Account</button>
+      </form>
+    </div>
+
+    <p class="auth-note">Official UIU password verification needs a university authentication API. This app checks the exact password saved for this planner account.</p>
+  </div>
+</section>
+
+<!-- ADD COURSE MODAL -->
+<div class="modal-overlay" id="addCourseModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">Add Custom Course</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Course Code *</label>
+      <input class="form-input" id="f_code" placeholder="e.g., CSE 4999" maxlength="20">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Course Title *</label>
+      <input class="form-input" id="f_title" placeholder="e.g., Advanced Topics in CS">
+    </div>
+    <div class="form-row-2">
+      <div class="form-row" style="margin-bottom:0">
+        <label class="form-label">Credit Hours *</label>
+        <select class="form-select" id="f_credits">
+          <option value="1">1.0</option>
+          <option value="2">2.0</option>
+          <option value="3" selected>3.0</option>
+          <option value="4">4.0</option>
+        </select>
+      </div>
+      <div class="form-row" style="margin-bottom:0">
+        <label class="form-label">Trimester *</label>
+        <select class="form-select" id="f_trimester">
+          <option value="1">Trimester 1</option>
+          <option value="2">Trimester 2</option>
+          <option value="3">Trimester 3</option>
+          <option value="4">Trimester 4</option>
+          <option value="5">Trimester 5</option>
+          <option value="6">Trimester 6</option>
+          <option value="7">Trimester 7</option>
+          <option value="8">Trimester 8</option>
+          <option value="9">Trimester 9</option>
+          <option value="10">Trimester 10</option>
+          <option value="11">Trimester 11</option>
+          <option value="12">Trimester 12</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Category</label>
+      <select class="form-select" id="f_cat">
+        <option value="core">Core Course</option>
+        <option value="language">Language</option>
+        <option value="general">General Education</option>
+        <option value="ged">GED Optional</option>
+        <option value="science">Basic Science</option>
+        <option value="math">Mathematics</option>
+        <option value="engineering">Other Engineering</option>
+        <option value="elective">Elective</option>
+        <option value="major">Major</option>
+        <option value="fydp">FYDP</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Prerequisite (optional)</label>
+      <input class="form-input" id="f_prereq" placeholder="e.g., CSE 1115">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="modalSubmitBtn" onclick="submitCourse()">Add Course</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP WRAPPER -->
+<div class="app-wrapper" id="appWrapper" hidden>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="mobile-nav-toggle" onclick="toggleSidebar()" id="mobileMenuBtn">☰</button>
+      <div class="topbar-brand">
+        <div class="brand-icon">🎓</div>
+        <div>
+          <div class="brand-title">Course Planner</div>
+          <div class="brand-sub">B.Sc. in CSE — UIU</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="overall-gpa-badge">
+        <span>CGPA</span>
+        <span class="gpa-val" id="topbarGpa">—</span>
+      </div>
+      <div class="cgpa-error-badge" id="cgpaErrorBadge" hidden>
+        <span>!</span>
+        Invalid CGPA
+      </div>
+      <button class="icon-btn" onclick="openProfileModal()" title="Edit Profile">👤</button>
+      <button class="student-badge" id="studentBadge" onclick="openAccountSwitcher()" title="Switch account">Student</button>
+      <button class="icon-btn" onclick="exportData()" title="Export Data">💾</button>
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle Theme">🌙</button>
+      <button class="icon-btn" onclick="logoutStudent()" title="Logout">↪</button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section-title">Navigation</div>
+    <div class="trimester-nav">
+      <button class="trim-btn active" onclick="showDashboard()" id="dashBtn">
+        <span class="trim-label">
+          <span class="trim-num">◉</span>
+          Dashboard
+        </span>
+      </button>
+    </div>
+
+    <div class="sidebar-section-title">Trimesters</div>
+    <div class="trimester-nav" id="trimNav"></div>
+
+    <div class="sidebar-sep"></div>
+    <div class="sidebar-section-title">Overview</div>
+    <div class="sidebar-overview">
+      <div class="overview-stat">
+        <span>Total Courses</span>
+        <span class="val accent" id="ov_total">—</span>
+      </div>
+      <div class="overview-stat">
+        <span>Completed</span>
+        <span class="val green" id="ov_done">—</span>
+      </div>
+      <div class="overview-stat">
+        <span>Remaining</span>
+        <span class="val" id="ov_remaining">—</span>
+      </div>
+      <div class="overview-stat">
+        <span>Total Credits</span>
+        <span class="val accent" id="ov_credits">137</span>
+      </div>
+      <div class="overview-stat">
+        <span>Credits Done</span>
+        <span class="val green" id="ov_cdone">0</span>
+      </div>
+      <div class="overview-stat">
+        <span>CGPA</span>
+        <span class="val" id="ov_gpa" style="color:var(--orange)">—</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content" id="mainContent">
+    <!-- Content rendered by JS -->
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

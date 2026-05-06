@@ -1,0 +1,8 @@
+{
+  "1234567890": {
+    "id": "1234567890",
+    "name": "Test Student",
+    "email": "student@example.com",
+    "passwordHash": "20bc83fad6d30986483e65f6c0dd7cf1:7aa09c7a859cd932796ec36207241cfad2882887783155cd1377a02cfbf8c660a695104f439d403e5fb3feb58f1d303004e7401867f0bc8cc11f92895f4938dd"
+  }
+}
