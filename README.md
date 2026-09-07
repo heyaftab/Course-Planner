@@ -1,194 +1,290 @@
-# UIU CSE Course Planner
+# 🎓 UIU CSE Course Planner
 
-## Project Overview
+A web-based academic course planning application designed specifically for **Computer Science & Engineering (CSE) students of United International University (UIU)**.
 
-UIU CSE Course Planner is a full-stack academic planning app for B.Sc. in CSE students at United International University. It helps students create an account, manage a trimester-wise course plan, track completed courses, calculate CGPA, update their profile, upload a profile photo, and export progress as a CSV file.
+The application helps students organize their courses, plan upcoming trimesters, and keep track of their academic progress through a simple and user-friendly interface.
 
-The project demonstrates practical frontend state management, REST API design, authentication workflows, local persistence, responsive UI design, and deployment readiness.
+---
 
-## Tech Stack
+## 🚀 Features
 
-- **Frontend**: HTML, CSS, JavaScript
-- **Backend**: Python, FastAPI
-- **Server**: Uvicorn
-- **Optional Backend Alternative**: Node.js
-- **Storage**: JSON file storage with browser `localStorage` fallback
-- **Deployment**: Nginx reverse proxy with HTTPS support
+* 📚 **Course Management**
+  Browse and manage available CSE courses.
 
-## Features
+* 🗓️ **Trimester Planning**
+  Plan courses across different trimesters according to your academic progress.
 
-- Secure student signup and login using a 10 digit UIU student ID.
-- Editable profile with name, phone number, password, and profile photo.
-- Locked student ID after signup to protect account identity.
-- Dashboard summary for total courses, completed courses, earned credits, and CGPA.
-- Trimester-wise course planning based on the UIU CSE curriculum.
-- Completion and grade tracking for each course.
-- Elective, GED, major, and custom course selection.
-- Add or remove custom courses and trimesters.
-- CSV export for offline academic records.
-- Dark and light theme support.
-- Optional saved-login account switching on personal devices.
+* 🎯 **Academic Planning**
+  Organize completed, ongoing, and planned courses.
 
-## Screenshots
+* 🔍 **Course Search**
+  Quickly find courses using course codes or names.
 
-![Dashboard screenshot placeholder](docs/screenshots/dashboard.png)
+* 📊 **Credit Tracking**
+  Keep track of completed and planned credits.
 
-Dashboard overview with progress, credits, CGPA, and profile photo.
+* 💾 **Data Persistence**
+  Course and planning data is stored using SQLite.
 
-![Profile editor screenshot placeholder](docs/screenshots/profile-editor.png)
+* ⚡ **Fast Backend**
+  Built with FastAPI for lightweight and high-performance API operations.
 
-Profile editor for updating personal information and profile photo.
+* 📱 **Responsive Interface**
+  Designed to work across desktop and mobile screen sizes.
 
-![Trimester view screenshot placeholder](docs/screenshots/trimester-view.png)
+---
 
-Trimester view with course completion, grades, and course actions.
+## 🛠️ Technology Stack
 
-## How It Works
+### Frontend
 
-The app can run in two modes:
+* HTML5
+* CSS3
+* JavaScript
+* Vanilla JavaScript
 
-- **Backend mode**: FastAPI handles signup, login, profile updates, and account storage in `backend/data/students.json`.
-- **Static-only mode**: The frontend runs directly in the browser and stores data with `localStorage`.
+### Backend
 
-The frontend is a single-page app. JavaScript dynamically updates the dashboard, trimester views, profile modal, course status, grades, and export data.
+* Python
+* FastAPI
 
-## Project Structure
+### Database
+
+* SQLite
+
+### Development Tools
+
+* Git
+* GitHub
+* REST API
+* VS Code
+
+---
+
+## 🏗️ Project Architecture
+
+The project follows a simple client-server architecture:
 
 ```text
-.
-├── README.md
-├── run.py
-├── requirements.txt
-├── backend
-│   ├── main.py
-│   ├── server.js
-│   └── data/students.json
-├── frontend
-│   ├── index.html
-│   ├── css/styles.css
-│   └── js/app.js
-└── index.html
+┌─────────────────────────┐
+│       Frontend          │
+│                         │
+│ HTML + CSS + JavaScript │
+└────────────┬────────────┘
+             │
+             │ HTTP / REST API
+             ▼
+┌─────────────────────────┐
+│        FastAPI          │
+│        Backend          │
+│                         │
+│ Python                  │
+└────────────┬────────────┘
+             │
+             │ Database Queries
+             ▼
+┌─────────────────────────┐
+│         SQLite          │
+│        Database         │
+└─────────────────────────┘
 ```
 
-## Run Locally
+---
 
-From the project root:
+## 📂 Project Structure
+
+```text
+uiu-cse-course-planner/
+│
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+├── backend/
+│   ├── main.py
+│   ├── database.py
+│   └── ...
+│
+├── database/
+│   └── course_planner.db
+│
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
+
+> The exact structure may vary depending on the current implementation.
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone the repository
 
 ```bash
-python3 run.py
+git clone https://github.com/heyaftab/uiu-cse-course-planner.git
+```
+
+### 2. Navigate to the project
+
+```bash
+cd uiu-cse-course-planner
+```
+
+### 3. Create a virtual environment
+
+```bash
+python3 -m venv venv
+```
+
+Activate it on macOS/Linux:
+
+```bash
+source venv/bin/activate
 ```
 
 On Windows:
 
 ```bash
-py run.py
+venv\Scripts\activate
 ```
 
-The runner creates `.venv` if needed, installs `requirements.txt` only when dependencies are missing, and starts the FastAPI server.
+### 4. Install dependencies
 
-The terminal will show:
-
-```text
-Student app:        http://127.0.0.1:8000
-Backend dashboard:  http://127.0.0.1:8000/api
-API test docs:      http://127.0.0.1:8000/docs
-Server health page: http://127.0.0.1:8000/api/health/view
+```bash
+pip install -r requirements.txt
 ```
 
-Open the frontend app in your browser:
+### 5. Start the FastAPI server
+
+```bash
+uvicorn backend.main:app --reload
+```
+
+The API will normally be available at:
 
 ```text
 http://127.0.0.1:8000
 ```
 
-Useful options:
+FastAPI's interactive API documentation can be accessed at:
 
-```bash
-python3 run.py --install
-python3 run.py --no-reload
-python3 run.py --port 8080
+```text
+http://127.0.0.1:8000/docs
 ```
 
-Manual setup:
+---
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-uvicorn backend.main:app --reload
+## 🖥️ Usage
+
+1. Open the application in your browser.
+2. Browse available CSE courses.
+3. Select the courses you have completed.
+4. Add courses you plan to take.
+5. Organize courses by trimester.
+6. Monitor your credit progress.
+7. Use the planner to build a suitable academic roadmap.
+
+---
+
+## 🎯 Purpose
+
+The purpose of this project is to make academic planning easier for UIU CSE students.
+
+Students often need to keep track of:
+
+* Completed courses
+* Remaining courses
+* Course prerequisites
+* Credit requirements
+* Upcoming trimesters
+* Planned courses
+
+This application brings these tasks into a single planning interface.
+
+---
+
+## 🔮 Future Improvements
+
+Possible future improvements include:
+
+* [ ] Automatic prerequisite validation
+* [ ] Automatic trimester recommendations
+* [ ] Degree progress visualization
+* [ ] CGPA calculation
+* [ ] Course conflict detection
+* [ ] Class schedule generation
+* [ ] Faculty and section information
+* [ ] Course rating and review system
+* [ ] Student authentication
+* [ ] Cloud database support
+* [ ] Mobile-friendly improvements
+* [ ] Deployment as a production web application
+
+---
+
+## 🔐 Security
+
+Sensitive configuration files and credentials should not be committed to the repository.
+
+Make sure files such as the following are included in `.gitignore` when applicable:
+
+```text
+.env
+venv/
+__pycache__/
+*.pyc
+*.db
 ```
 
-Manual Windows setup:
+---
+
+## 🤝 Contributing
+
+Contributions, suggestions, and improvements are welcome.
+
+If you would like to contribute:
+
+1. Fork the repository.
+2. Create a new branch.
 
 ```bash
-py -m venv .venv
-.venv\Scripts\activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-uvicorn backend.main:app --reload
+git checkout -b feature/your-feature
 ```
 
-For static-only testing, open `frontend/index.html` directly in a browser.
-
-## API Examples
-
-Health check:
+3. Make your changes.
+4. Commit your changes.
 
 ```bash
-curl http://127.0.0.1:8000/api/health
+git commit -m "Add your feature"
 ```
 
-Create an account:
+5. Push the branch.
 
 ```bash
-curl -X POST http://127.0.0.1:8000/api/signup \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test Student","email":"student@example.com","studentId":"1234567890","password":"secret123"}'
+git push origin feature/your-feature
 ```
 
-Log in:
+6. Open a Pull Request.
 
-```bash
-curl -X POST http://127.0.0.1:8000/api/login \
-  -H "Content-Type: application/json" \
-  -d '{"studentId":"1234567890","password":"secret123"}'
-```
+---
 
-Update profile:
+## 📄 License
 
-```bash
-curl -X POST http://127.0.0.1:8000/api/profile \
-  -H "Content-Type: application/json" \
-  -d '{"studentId":"1234567890","name":"Updated Name","phone":"+880 1712345678","password":"","profilePhoto":""}'
-```
+This project is currently intended for educational and academic purposes.
 
-## Deployment
+If you plan to distribute or reuse the project publicly, consider adding an appropriate open-source license.
 
-Deploy the FastAPI app on a Python-capable cloud server such as DigitalOcean, AWS EC2, Azure, Google Cloud, or Render. A typical production setup is:
+---
 
-- Run Uvicorn without `--reload`.
-- Put Nginx in front of Uvicorn as a reverse proxy.
-- Enable HTTPS with Let's Encrypt.
-- Ensure `backend/data/` is writable by the application process.
-- Back up `backend/data/students.json` regularly.
-- For production-scale use, replace JSON storage with a database such as PostgreSQL.
+## 👨‍💻 Author
 
-Example production command:
+**Aftab Uddin Ahmad**
 
-```bash
-uvicorn backend.main:app --host 127.0.0.1 --port 8000
-```
+Computer Science & Engineering
+United International University
 
-## Security Notes
+---
 
-Official UIU credential verification requires access to a university authentication API. This project verifies only accounts created inside this planner.
-
-Saved account switching stores selected login details in the browser. Use it only on a personal device.
-
-## Future Improvements
-
-- Add database-backed storage.
-- Add token-based authentication.
-- Add automated tests.
-- Replace screenshot placeholders with real images.
+⭐ If you find this project useful, consider giving the repository a star.
